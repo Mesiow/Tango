@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/380_gunshot_single-mike-koenig.wav-8792ec25f2f44802e76f68515be0c463.sample"
+
+[deps]
+
+source_file="res://Sounds/380_gunshot_single-mike-koenig.wav"
+dest_files=[ "res://.import/380_gunshot_single-mike-koenig.wav-8792ec25f2f44802e76f68515be0c463.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

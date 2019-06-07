@@ -1,0 +1,90 @@
+[gd_scene load_steps=47 format=2]
+
+[ext_resource path="res://Scripts/Zombie.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_0.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_9.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_15.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_13.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_11.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_10.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_1.png" type="Texture" id=8]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_8.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_7.png" type="Texture" id=10]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_16.png" type="Texture" id=11]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_6.png" type="Texture" id=12]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_4.png" type="Texture" id=13]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_2.png" type="Texture" id=14]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_3.png" type="Texture" id=15]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_5.png" type="Texture" id=16]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_12.png" type="Texture" id=17]
+[ext_resource path="res://Sprites/Zombie/skeleton-idle_14.png" type="Texture" id=18]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_9.png" type="Texture" id=19]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_13.png" type="Texture" id=20]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_14.png" type="Texture" id=21]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_12.png" type="Texture" id=22]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_8.png" type="Texture" id=23]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_11.png" type="Texture" id=24]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_0.png" type="Texture" id=25]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_7.png" type="Texture" id=26]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_5.png" type="Texture" id=27]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_16.png" type="Texture" id=28]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_6.png" type="Texture" id=29]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_15.png" type="Texture" id=30]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_4.png" type="Texture" id=31]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_3.png" type="Texture" id=32]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_1.png" type="Texture" id=33]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_10.png" type="Texture" id=34]
+[ext_resource path="res://Sprites/Zombie/skeleton-move_2.png" type="Texture" id=35]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_1.png" type="Texture" id=36]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_4.png" type="Texture" id=37]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_8.png" type="Texture" id=38]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_7.png" type="Texture" id=39]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_6.png" type="Texture" id=40]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_5.png" type="Texture" id=41]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_2.png" type="Texture" id=42]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_3.png" type="Texture" id=43]
+[ext_resource path="res://Sprites/Zombie/skeleton-attack_0.png" type="Texture" id=44]
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 91.2721
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 35 ) ],
+"loop": true,
+"name": "move",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 36 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 44 ) ],
+"loop": true,
+"name": "attack",
+"speed": 8.0
+} ]
+
+[node name="Zombie" type="KinematicBody2D"]
+scale = Vector2( 0.2, 0.2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 71.7778, -73.7709, 18.1481, -89.4746, -20.6667, -81.1783, -50.5926, -63.1042, -79.9259, -35.5487, -100.963, -5.32645, -93.5556, 36.155, -66.2963, 70.5254, -33.1111, 96.3032, 12.2222, 101.044, 57.2593, 90.9698, 71.4815, 78.5254, 67.037, 65.7847, 57.2593, 59.2661, 46.5926, 64.5995, 29.1111, 75.2661, -2, 77.3402, -23.037, 57.4884, -15.6296, 35.2661, 7.77778, 24.0069, 8.66667, 5.9328, -4.37037, -14.2153, -15.037, -24.882, -6.14815, -48.882, 7.48148, -61.919, 32.3704, -63.1042, 42.4444, -54.5116, 52.2222, -49.4746, 64.6667, -47.4005, 76.2222, -50.6598, 80.963, -60.1413 )
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+modulate = Color( 0.796078, 0.929412, 0.760784, 1 )
+frames = SubResource( 1 )
+animation = "attack"
+[connection signal="area_entered" from="AttackArea" to="." method="_on_AttackArea_area_entered"]
+[connection signal="body_entered" from="AttackArea" to="." method="_on_AttackArea_body_entered"]
+[connection signal="body_exited" from="AttackArea" to="." method="_on_AttackArea_body_exited"]

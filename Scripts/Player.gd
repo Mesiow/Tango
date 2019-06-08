@@ -9,6 +9,8 @@ var movementSpeed=150
 var meleeState=false
 var shootingState=false
 var health=100 setget setHealth, getHealth
+var died=false
+var canShoot=true
 
 func _ready():
 	set_process(true)
@@ -53,11 +55,14 @@ func _input(event):
 func pollAttack(event):
 	#shooting
 	if event.is_action_pressed("shoot"):
-		shootingState=true
-		$AnimatedSprite.stop()
-		$AnimatedSprite.play("shoot_handgun")
-		fireGun()
-		$Gun/HandGunShot.play()
+		if canShoot:
+			shootingState=true
+			$AnimatedSprite.stop()
+			$AnimatedSprite.play("shoot_handgun")
+			fireGun()
+			$Gun/HandGunShot.play()
+			$Gun/ShootTimer.start()
+			canShoot=false
 	pass
 
 func fireGun():
@@ -82,10 +87,21 @@ func _on_AnimatedSprite_animation_finished():
 	
 func setHealth(newHealth):
 	if newHealth <= 0:
+		died=true
 		queue_free()
 	health=newHealth
 	pass
 	
 func getHealth():
 	return health
+	pass
+
+
+func _on_ShootTimer_timeout():
+	canShoot=true
+	pass 
+
+
+func _on_Player_tree_exiting():
+	self=null
 	pass

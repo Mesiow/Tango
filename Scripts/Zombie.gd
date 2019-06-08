@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var motion=Vector2()
-export var movementSpeed=120
+export var movementSpeed=220
 
 var reactTime=900
 var direction=Vector2()
@@ -11,8 +11,9 @@ var nextDirTime=0
 var health=10 setget setHealth, getHealth
 var attacking=false
 var attackDmg=10
+var passive=false
 
-onready var player=get_parent().get_node("Player") #get access to the player
+
 
 func _ready():
 	set_process(true)
@@ -25,19 +26,32 @@ func spawn(position):
 	pass
 
 func _process(delta):
-	look_at(player.global_position)
+	var player=get_parent().get_node("Player") #access player
+	if player != null:
+		look_at(player.global_position)
 	#follow player
 	
 	if attacking:
-		player.health-=1
-		print(player.health)
+		if player!=null:
+			player.health-=1
 		
 	if (motion > Vector2(0,0) or motion < Vector2(0,0)) and !attacking:
 		$AnimatedSprite.play("move")
-		
-	var dir=(player.global_position - global_position).normalized()
 	
-	motion=dir * movementSpeed
+	if player!=null:
+		var dir=(player.global_position - global_position).normalized()
+		motion=dir * movementSpeed
+	else:
+		(passive=true if false else false)
+		
+	if passive and player == null:
+		movementSpeed=movementSpeed - movementSpeed *0.5 #half the speed
+		var randDirX=rand_range(0, get_viewport_rect().size.x) #get a random direction for the zombie to passively move in
+		var randDirY=rand_range(0, get_viewport_rect().size.y)
+		var dir=(Vector2(randDirX, randDirY) - global_position).normalized()
+		motion=dir * movementSpeed
+		passive=false
+	
 	move_and_slide(motion)
 	pass
 	
@@ -57,6 +71,7 @@ func _on_AttackArea_body_exited(body):
 	
 func setHealth(newHealth):
 	if newHealth <= 0:
+		remove_from_group("Zombies")
 		queue_free()#zombie is dead
 	health=newHealth
 	pass

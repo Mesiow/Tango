@@ -1,8 +1,12 @@
 extends Node
 
 const Zombie=preload("res://Scenes/Zombie.tscn")
+export var amountToSpawn = 1
 
 func _ready():
+	pass
+	
+func begin():
 	$Timer.start()
 	pass
 	
@@ -22,5 +26,6 @@ func spawn():
 
 
 func _on_Timer_timeout():
-	spawn()
+	for i in range(0, amountToSpawn):
+		spawn()
 	pass

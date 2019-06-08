@@ -1,14 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/Objects/bullet.png" type="Texture" id=2]
+[ext_resource path="res://Sounds/body_hit.wav" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1, 1 )
 
 [sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0, 0.475177, 0.564103, 0.650602, 0.746988, 0.843373, 0.921687 )
-colors = PoolColorArray( 0.945098, 0.913725, 0.027451, 0, 0.996078, 1, 0.360784, 0.772549, 1, 0.980392, 0.54902, 0.392157, 1, 0.980392, 0.466667, 0.392157, 1, 0.980392, 0.372549, 0.584314, 1, 0.988235, 0.52549, 0.658824, 1, 0.988235, 0.384314, 0.709804 )
+offsets = PoolRealArray( 0, 0.564103, 0.650602, 0.746988, 0.843373, 0.921687, 1 )
+colors = PoolColorArray( 0.945098, 0.913725, 0.027451, 0, 1, 0.980392, 0.54902, 0.392157, 1, 0.980392, 0.466667, 0.392157, 1, 0.980392, 0.372549, 0.584314, 1, 0.988235, 0.52549, 0.658824, 1, 0.988235, 0.384314, 0.709804, 0.996078, 1, 0.360784, 0.772549 )
 
 [node name="Bullet" type="Area2D"]
 script = ExtResource( 1 )
@@ -31,5 +32,12 @@ position = Vector2( -1, 0 )
 width = 2.0
 default_color = Color( 1, 0.996078, 0.854902, 1 )
 gradient = SubResource( 2 )
+texture_mode = 982549094
+
+[node name="HitBody" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = -1.0
+attenuation = 1.0
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="finished" from="HitBody" to="." method="_on_HitBody_finished"]

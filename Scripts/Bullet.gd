@@ -5,6 +5,7 @@ export var speed=250
 export var damage=5
 var direction=Vector2()
 
+onready var hit=get_node("HitBody")
 onready var trail=get_node("Trail")
 var trailLength=5
 var point
@@ -46,4 +47,11 @@ func _on_VisibilityNotifier2D_screen_exited():
 func _on_Bullet_body_entered(body):
 	if body.is_in_group("Zombies"):
 		body.health-=damage
+		hit.play()
+		hide()
 	pass
+
+
+func _on_HitBody_finished():
+	queue_free()
+	pass 

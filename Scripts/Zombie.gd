@@ -16,8 +16,14 @@ var attacking=false
 var attackDmg=10
 var passive=false
 
+var player
+
 func _ready():
+	randomize()
 	set_process(true)
+	var speed=rand_range(120, 220) #give zombie a random speed
+	movementSpeed=speed
+	
 	$AnimatedSprite.play("idle")
 	add_to_group("Zombies")
 	pass
@@ -27,7 +33,7 @@ func spawn(position):
 	pass
 
 func _process(delta):
-	var player=get_parent().get_node("Player") #access player
+	player=get_parent().get_node("Player") #access player
 	if player != null:
 		look_at(player.global_position)
 	#follow player
@@ -75,12 +81,12 @@ func _on_AttackArea_body_exited(body):
 func setHealth(newHealth):
 	randomize()
 	if newHealth <= 0:
-		var pickupChance=randi() %5 + 0
-		print("pickup chance: "+str(pickupChance))
-		if pickupChance >= 1:
-			var drop = shotgunPickup.instance()
-			drop.spawn(global_position)
-			get_tree().get_root().get_node("/root/World").add_child(drop)
+		if !player.hasShotgun:
+			var pickupChance=randi() %10 + 0
+			if pickupChance >= 5:
+				var drop = shotgunPickup.instance()
+				drop.spawn(global_position)
+				get_tree().get_root().get_node("/root/World").add_child(drop)
 		remove_from_group("Zombies")
 		queue_free()#zombie is dead
 	health=newHealth

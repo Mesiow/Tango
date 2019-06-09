@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/UI/Interface.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/UI/energy_bar_bg.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/UI/energy_bar_fill.png" type="Texture" id=3]
+[ext_resource path="res://Scripts/UI/LifeBar.gd" type="Script" id=4]
+
+[node name="Interface" type="Control"]
+margin_right = 74.0
+margin_bottom = 12.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="LifeBar" type="TextureProgress" parent="."]
+self_modulate = Color( 0.956863, 0.956863, 0.956863, 1 )
+margin_right = 248.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.3, 0.3 )
+value = 100.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+tint_under = Color( 0.341176, 0, 0, 1 )
+tint_progress = Color( 1, 0, 0, 1 )
+script = ExtResource( 4 )
+
+[node name="fillEffect" type="Tween" parent="LifeBar"]
+[connection signal="healthChanged" from="." to="LifeBar" method="_on_Interface_healthChanged"]
+[connection signal="tween_started" from="LifeBar/fillEffect" to="LifeBar" method="_on_fillEffect_tween_started"]

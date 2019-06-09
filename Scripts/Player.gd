@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+const Crosshair=preload("res://Scenes/Crosshair.tscn")
 const BulletScene=preload("res://Scenes/Bullet.tscn")
 const MuzzleFlashScene=preload("res://Scenes/MuzzleFlash.tscn")
 
@@ -13,13 +14,20 @@ var shootingState=false
 var health=100 setget setHealth, getHealth
 var died=false
 var canShoot=true
+var hasShotgun=false
 
 var weaponDict = {}
 var equipped setget setWeapon, getWeapon
+signal healthChanged(health)
+signal died
 
 func _ready():
 	set_process(true)
 	set_process_input(true)
+	var cross=Crosshair.instance()
+	var direction=($Gun/GunDirection.global_position - $Gun/GunMuzzle.global_position).normalized()
+	cross.init(direction)
+	add_child(cross)
 	weaponDict["Equipped"]="Handgun"
 	pass
 	
@@ -30,6 +38,13 @@ func _process(delta):
 	pass
 	
 func _input(event):
+	
+	#select weapon
+	if event.is_action_pressed("weapon1"):
+		weaponDict["Equipped"]="Handgun"
+	elif event.is_action_pressed("weapon2"):
+		if hasShotgun:
+			weaponDict["Equipped"]="Shotgun"
 	
 	#Y movement
 	if event.is_action_pressed("Up"):
@@ -128,8 +143,10 @@ func _on_AnimatedSprite_animation_finished():
 func setHealth(newHealth):
 	if newHealth <= 0:
 		died=true
+		emit_signal("died")
 		queue_free()
 	health=newHealth
+	emit_signal("healthChanged", health)
 	pass
 	
 func getHealth():
@@ -137,7 +154,7 @@ func getHealth():
 	pass
 
 
-func _on_ShootTimer_timeout():
+func _on_ShootTimerHandGun_timeout():
 	canShoot=true
 	pass 
 

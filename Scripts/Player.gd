@@ -3,6 +3,8 @@ extends KinematicBody2D
 const BulletScene=preload("res://Scenes/Bullet.tscn")
 const MuzzleFlashScene=preload("res://Scenes/MuzzleFlash.tscn")
 
+onready var anim=get_node("AnimatedSprite")
+
 var motion=Vector2()
 var movementSpeed=150
 
@@ -12,9 +14,13 @@ var health=100 setget setHealth, getHealth
 var died=false
 var canShoot=true
 
+var weaponDict = {}
+var equipped setget setWeapon, getWeapon
+
 func _ready():
 	set_process(true)
 	set_process_input(true)
+	weaponDict["Equipped"]="Handgun"
 	pass
 	
 	
@@ -39,7 +45,7 @@ func _input(event):
 		motion.x = movementSpeed
 	
 	if (motion > Vector2(0,0) or motion < Vector2(0,0)) and !shootingState:
-		$AnimatedSprite.play("moving")
+		determineMovementAnim()
 	
 	if event.is_action_released("Up") or event.is_action_released("Down"):
 		motion.y=0
@@ -47,9 +53,34 @@ func _input(event):
 		motion.x=0
 	else:
 		if !shootingState:
-			$AnimatedSprite.play("idle")
+			determineIdleAnim()
 
 	pollAttack(event)
+	pass
+	
+func determineMovementAnim():
+	if weaponDict["Equipped"] == "Handgun":
+		anim.play("moving_handgun")
+	elif weaponDict["Equipped"] == "Shotgun":
+		anim.play("moving_shotgun")
+	pass
+	
+func determineIdleAnim():
+	if weaponDict["Equipped"] == "Handgun": #if equipped weapon is a handgun
+		anim.play("idle_handgun")
+	elif weaponDict["Equipped"] == "Shotgun":
+		anim.play("idle_shotgun")
+	pass
+	
+func determineShootingAnim():
+	if weaponDict["Equipped"] == "Handgun":
+		anim.play("shoot_handgun")
+		$Gun/HandGunShot.play()
+		$Gun/ShootTimerHandGun.start()
+	elif weaponDict["Equipped"] == "Shotgun":
+		anim.play("shoot_shotgun")
+		$Gun/ShotgunShot.play()
+		$Gun/ShootTimerShotgun.start()
 	pass
 	
 func pollAttack(event):
@@ -57,24 +88,33 @@ func pollAttack(event):
 	if event.is_action_pressed("shoot"):
 		if canShoot:
 			shootingState=true
-			$AnimatedSprite.stop()
-			$AnimatedSprite.play("shoot_handgun")
+			anim.stop()
+			determineShootingAnim()
 			fireGun()
-			$Gun/HandGunShot.play()
-			$Gun/ShootTimer.start()
 			canShoot=false
 	pass
 
 func fireGun():
+	randomize()
+	var world=get_tree().get_root().get_node("/root/World")
+	
 	var bullet=BulletScene.instance()
 	var muzzleNode=get_node("Gun/GunMuzzle")
 	var muzzleGlobalPos=muzzleNode.global_position
 	var muzzleLocalPos=muzzleNode.position
-	
 	var direction=($Gun/GunDirection.global_position - muzzleGlobalPos).normalized()
-	bullet.spawn(muzzleGlobalPos, direction)
 	
-	get_tree().get_root().get_node("/root/World").add_child(bullet)
+	if weaponDict["Equipped"] == "Handgun":
+		bullet.spawn(muzzleGlobalPos, direction)
+		world.add_child(bullet)
+	elif weaponDict["Equipped"] == "Shotgun":
+		bullet.spawn(muzzleGlobalPos, direction) #center shell
+		for i in range(0, 4): #spawn 4 shells
+			var shotgunBullet=BulletScene.instance()
+			var randAngle=rand_range(-0.5, 0.5)
+			var rotatedDir = direction.rotated(randAngle)
+			shotgunBullet.spawn(muzzleGlobalPos, rotatedDir)
+			world.add_child(shotgunBullet)
 	
 	var flash=MuzzleFlashScene.instance()
 	flash.spawn(muzzleLocalPos)
@@ -104,4 +144,17 @@ func _on_ShootTimer_timeout():
 
 func _on_Player_tree_exiting():
 	self=null
+	pass
+	
+func setWeapon(newWeapon):
+	
+	pass
+	
+func getWeapon():
+	return equipped
+	pass
+
+
+func _on_ShootTimerShotgun_timeout():
+	canShoot=true
 	pass

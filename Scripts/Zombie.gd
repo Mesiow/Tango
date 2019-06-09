@@ -4,6 +4,7 @@ var motion=Vector2()
 export var movementSpeed=120
 
 const bloodParticles=preload("res://Scenes/BloodParticles.tscn")
+const shotgunPickup=preload("res://Scenes/Pickups/ShotgunPickup.tscn")
 
 var reactTime=900
 var direction=Vector2()
@@ -42,15 +43,17 @@ func _process(delta):
 		var dir=(player.global_position - global_position).normalized()
 		motion=dir * movementSpeed
 	else:
+		motion=Vector2(0,0)
+		$AnimatedSprite.play("idle")
 		(passive=true if false else false)
 		
 	if passive and player == null:
 		movementSpeed=movementSpeed - movementSpeed *0.5 #half the speed
-		var randDirX=rand_range(0, get_viewport_rect().size.x) #get a random direction for the zombie to passively move in
-		var randDirY=rand_range(0, get_viewport_rect().size.y)
-		var dir=(Vector2(randDirX, randDirY) - global_position).normalized()
-		motion=dir * movementSpeed
-		passive=false
+		#var randDirX=rand_range(0, get_viewport_rect().size.x) #get a random direction for the zombie to passively move in
+		#var randDirY=rand_range(0, get_viewport_rect().size.y)
+		#var dir=(Vector2(randDirX, randDirY) - global_position).normalized()
+		#motion=dir * movementSpeed
+		#passive=false
 	
 	move_and_slide(motion)
 	pass
@@ -70,7 +73,14 @@ func _on_AttackArea_body_exited(body):
 	pass 
 	
 func setHealth(newHealth):
+	randomize()
 	if newHealth <= 0:
+		var pickupChance=randi() %5 + 0
+		print("pickup chance: "+str(pickupChance))
+		if pickupChance >= 1:
+			var drop = shotgunPickup.instance()
+			drop.spawn(global_position)
+			get_tree().get_root().get_node("/root/World").add_child(drop)
 		remove_from_group("Zombies")
 		queue_free()#zombie is dead
 	health=newHealth

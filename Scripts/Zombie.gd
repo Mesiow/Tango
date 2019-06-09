@@ -1,7 +1,9 @@
 extends KinematicBody2D
 
 var motion=Vector2()
-export var movementSpeed=220
+export var movementSpeed=120
+
+const bloodParticles=preload("res://Scenes/BloodParticles.tscn")
 
 var reactTime=900
 var direction=Vector2()
@@ -12,8 +14,6 @@ var health=10 setget setHealth, getHealth
 var attacking=false
 var attackDmg=10
 var passive=false
-
-
 
 func _ready():
 	set_process(true)
@@ -78,4 +78,11 @@ func setHealth(newHealth):
 	
 func getHealth():
 	return health
+	pass
+
+
+func _on_AttackArea_area_entered(area):
+	if area.get_name() == "Bullet":
+		var blood=bloodParticles.instance()
+		add_child(blood)
 	pass
